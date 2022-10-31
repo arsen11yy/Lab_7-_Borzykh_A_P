@@ -1,55 +1,85 @@
+import logging
+
+logging.basicConfig(filename = '1.log', encoding = 'utf-8', level = logging.INFO)
+
+# ввод координат клеток
 k = int(input('k: '))
 l = int(input('l: '))
 m = int(input('m: '))
 n = int(input('n: '))
+logging.info('k = {}, l = {}, m = {}, n = {}'.format(k, l, m, n))
 
+# проверка координат, должны быть от 1 до 8
 if len([ x for x in [ k, l, m, n ] if x < 1 or x > 8 ]) > 0:
     print('Некорректные значения')
+    logging.info('Некорректные значения')
     exit()
     
+# у полей одного цвета сумма всех четырех координат четная
 if (k + l + m + n) % 2 == 0:
     print('а) Поля ({}, {}) и ({}, {}) являются полями одного цвета'.format(k, l, m, n))
+    logging.info('а) Поля ({}, {}) и ({}, {}) являются полями одного цвета'.format(k, l, m, n))
 else:
     print('а) Поля ({}, {}) и ({}, {}) являются не полями одного цвета'.format(k, l, m, n))
+    logging.info('а) Поля ({}, {}) и ({}, {}) являются не полями одного цвета'.format(k, l, m, n))
 
+# выбор фигуры
 fig = int(input('1. Ферзь\n2. Ладья\n3. Слон\n4. Конь\n>'))
+logging.info('Выбрана фигура {}'.format(fig))
 
+# номер фигуры от 1 до 4, иначе ошибка
 if fig < 1 or fig > 4:
     print('Некорректные значения')
+    logging.info('Некорректные значения')
     exit()
     
-if ((fig == 1 and (k == m or l == n or k - l == m - n or k + l == m + n)) or
-    (fig == 2 and (k == m or l == n)) or
-    (fig == 3 and (k - l == m - n or k + l == m + n)) or
-    (fig == 4 and ((abs(k - m) == 1 and abs(l - n) == 2) or (abs(k - m) == 2 and abs(l - n) == 1)))):
+# проверяем досягаемость фигурой второй клетки из первой
+if ((fig == 1 and (k == m or l == n or k - l == m - n or k + l == m + n)) or # Ферзь по горизонтали, вертикали и диагонали
+    (fig == 2 and (k == m or l == n)) or # Ладья по горизонтали, вертикали
+    (fig == 3 and (k - l == m - n or k + l == m + n)) or # Слон по диагонали
+    (fig == 4 and ((abs(k - m) == 1 and abs(l - n) == 2) or (abs(k - m) == 2 and abs(l - n) == 1)))): # Конь буквой Г
     print('б) Фигура на ({}, {}) угрожает полю ({}, {})'.format(k, l, m, n))
+    logging.info('б) Фигура на ({}, {}) угрожает полю ({}, {})'.format(k, l, m, n))
 else:
     print('б) Фигура на ({}, {}) не угрожает полю ({}, {})'.format(k, l, m, n))
+    logging.info('б) Фигура на ({}, {}) не угрожает полю ({}, {})'.format(k, l, m, n))
     
+# выбор фигуры
 fig = int(input('1. Ферзь\n2. Ладья\n3. Слон\n>'))
+logging.info('Выбрана фигура {}'.format(fig))
 
+# номер фигуры от 1 до 3, иначе ошибка
 if fig < 1 or fig > 3:
     print('Некорректные значения')
+    logging.info('Некорректные значения')
     exit()
     
-if ((fig == 1 and (k == m or l == n or k - l == m - n or k + l == m + n)) or
-    (fig == 2 and (k == m or l == n)) or
-    (fig == 3 and (k - l == m - n or k + l == m + n))):
+# проверяем досягаемость фигурой второй клетки из первой
+if ((fig == 1 and (k == m or l == n or k - l == m - n or k + l == m + n)) or # Ферзь по горизонтали, вертикали и диагонали
+    (fig == 2 and (k == m or l == n)) or # Ладья по горизонтали, вертикали
+    (fig == 3 and (k - l == m - n or k + l == m + n))): # Слон по диагонали
     print('в) Фигура на ({}, {}) может одним ходом попасть на поле ({}, {})'.format(k, l, m, n))
-else:
+    logging.info('в) Фигура на ({}, {}) может одним ходом попасть на поле ({}, {})'.format(k, l, m, n))
+else: # иначе ищем промежуточный ход
     print('в) Фигура на ({}, {}) не может одним ходом попасть на поле ({}, {})'.format(k, l, m, n))
-    if fig == 1 or fig == 2:
+    logging.info('в) Фигура на ({}, {}) не может одним ходом попасть на поле ({}, {})'.format(k, l, m, n))
+    if fig == 1 or fig == 2: # для ферзя и ладьи это ход по вертикали до уровня целевой клетки
         print('Можно попасть за два хода. Следующий ход: ({}, {})'.format(k, n))
-    elif fig == 3:
-        if (k + l + m + n) % 2 == 0:
-            for p in range(1, 9):
-                for q in range(1, 9):
-                    if (p == k and q == l) or (p == m and q == n):
+        logging.info('Можно попасть за два хода. Следующий ход: ({}, {})'.format(k, n))
+    elif fig == 3: # для слона сложнее
+        if (k + l + m + n) % 2 == 0: # если клетка того же цвета
+            for p in range(1, 9): # переберем все клетки по горизонтали
+                for q in range(1, 9): # и по вертикали
+                    if (p == k and q == l) or (p == m and q == n): # пропуская начальную и конечную клетки
                         continue
-                    if (k - l == p - q or k + l == p + q) and (p - q == m - n or p + q == m + n):
+                    if (k - l == p - q or k + l == p + q) and (p - q == m - n or p + q == m + n): # если текущая клетка досягаема для слона как с начальной, так и с конечной клетки
+                        # то эта клетка подходит для промежуточного хода
                         print('Можно попасть за два хода. Следующий ход: ({}, {})'.format(p, q))
+                        logging.info('Можно попасть за два хода. Следующий ход: ({}, {})'.format(p, q))
                         break
-        else:
+        else: # на другой цвет слон никогда не попадет
             print('в) Фигура на ({}, {}) вообще не может попасть на поле ({}, {})'.format(k, l, m, n))
-        
+            logging.info('в) Фигура на ({}, {}) вообще не может попасть на поле ({}, {})'.format(k, l, m, n))
+
+logging.info('\n')
 input()
