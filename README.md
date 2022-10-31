@@ -47,8 +47,10 @@
 [:arrow_up:Оглавление](#Оглавление)
 
 ## Результаты выполенения программы:
-!![2](https://user-images.githubusercontent.com/112753125/199031238-9bf48181-42dc-4b04-98b8-02239200c09b.png)
-[1](https://user-images.githubusercontent.com/112753125/199031227-3dae1f3c-e8df-4a98-8acf-386236d111bb.png)
-![3](https://user-images.githubusercontent.com/112753125/199031264-2f724925-8a7b-44aa-8534-d2546ab0419c.png)
+![1](https://user-images.githubusercontent.com/112753125/199031462-0c5c6fc8-6b8f-40f4-888e-b3a55200b477.png)
+
+![2](https://user-images.githubusercontent.com/112753125/199031474-4447ce3b-755a-4e3d-abe9-64e6e4504806.png)
+
+![3](https://user-images.githubusercontent.com/112753125/199031490-dc27d51d-a9db-4dcc-a6d6-367215f9e098.png)
 [:arrow_up:Оглавление](#Оглавление)
 
